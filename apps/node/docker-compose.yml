@@ -43,5 +43,17 @@ services:
       timeout: 45s
       interval: 10s
       retries: 10
+  vault:
+    image: hashicorp/vault
+    restart: on-failure:10
+    cap_add:
+      - IPC_LOCK
+    ports:
+      - ${VAULT_PORT}:8200
+    command: server
+    volumes:
+      - vault-data:/vault/file
+      - $PWD/config.hcl:/vault/config/config.hcl
 volumes:
   postgres: ~
+  vault-data: ~
